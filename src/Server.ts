@@ -15,8 +15,9 @@ const app = express();
 const { BAD_REQUEST } = StatusCodes;
 
 
+const uri = process.env.MONGO_URI as string
 
-const DB = mongoose.connect('mongodb://localhost:27017/EAS', { useNewUrlParser: true })
+const DB = mongoose.connect(uri, { useNewUrlParser: true })
 DB.catch((e) => {
     console.log(e);
 })
