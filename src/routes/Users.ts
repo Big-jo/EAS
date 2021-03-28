@@ -1,8 +1,9 @@
-import StatusCodes from 'http-status-codes';
+import StatusCodes, { INTERNAL_SERVER_ERROR } from 'http-status-codes';
 import { Request, Response, Router } from 'express';
 import userController from '../controllers/user.controller';
 import UserDao from '@daos/User/UserDao.mock';
 import { paramMissingError, IRequest } from '@shared/constants';
+import { STATUS_CODES } from 'node:http';
 
 const router = Router();
 const userDao = new UserDao();
@@ -10,9 +11,32 @@ const { BAD_REQUEST, CREATED, OK } = StatusCodes;
 
 // Create New User
 router.post('/create', async (req, res) => {
-    const result = await userController.CreateUser(req.body.name, req.body.email,
-        req.body.phone, req.body.password, req.body.address, req.body.contacts);
-    res.json(result);
+    try {
+        console.log(req.body.contacts)
+        const result = await userController.CreateUser(req.body.name, req.body.email,
+            req.body.phone, req.body.password, req.body.address, req.body.contacts);
+        res.json(result);
+    } catch (error) {
+        res.sendStatus(500);
+    }
+});
+
+router.post('/login', async (req, res) => {
+    try {
+        const result = await userController.Login(req.body.email, req.body.password);
+        res.json(result);
+    } catch (error) {
+        res.json(error);
+    }
+});
+
+router.post('/update', async (req, res) => {
+    try {
+        const result = await userController.UpdateUser(req.body.update, req.body.email);
+        res.json({"msg": "updated"});
+    } catch (error) {
+        res.json(error);
+    }
 });
 
 

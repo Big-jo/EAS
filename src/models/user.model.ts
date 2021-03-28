@@ -12,9 +12,8 @@ const UserSchema = new Schema({
     address: {
         type: String
     },
-    emergencyContact: [{
-        type: String
-    }],
+    password: { type: String, required: true },
+    emergencyContacts: [String],
     email: {
         type: String,
         required: true
