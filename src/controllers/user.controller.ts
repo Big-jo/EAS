@@ -72,7 +72,7 @@ class UserController {
         UserModel.findOneAndUpdate({ email }, { $set: update }).exec();
     }
 
-    static async addUserContacts(contacts: string[], email: string) {
+    static async addUserContacts(contacts: { name: string, phone: string }[], email: string) {
         try {
             UserModel.findOneAndUpdate({ email }, { $push: { emergencyContacts: contacts } }).exec();
         } catch (error) {
@@ -83,7 +83,7 @@ class UserController {
     static async GetContacts(email: string) {
         try {
             const contacts = await UserModel.findOne({ email }, { emergencyContacts: 1 }).lean().exec();
-            return  contacts ;
+            return contacts;
         } catch (error) {
             logger.err(error);
         }

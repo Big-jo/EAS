@@ -13,7 +13,7 @@ const UserSchema = new Schema({
         type: String
     },
     password: { type: String, required: true },
-    emergencyContacts: [String],
+    emergencyContacts: [{ name: String, phone: String }],
     email: {
         type: String,
         required: true
