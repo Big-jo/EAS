@@ -34,16 +34,25 @@ router.post('/login', async (req, res) => {
 router.post('/update', async (req, res) => {
     try {
         const result = await userController.UpdateUser(req.body.update, req.body.email);
-        res.json({"msg": "updated"});
+        res.json({ "msg": "updated" });
     } catch (error) {
         res.json(error);
     }
 });
 
-router.post('/addContacts', async(req, res) => {
+router.post('/addContacts', async (req, res) => {
     try {
         UserController.addUserContacts(req.body.contacts, req.body.email);
         res.sendStatus(OK)
+    } catch (error) {
+        res.sendStatus(INTERNAL_SERVER_ERROR);
+    }
+})
+
+router.get('/contacts/:email', async (req, res) => {
+    try {
+        const result = await UserController.GetContacts(req.params.email);
+        res.json(result);
     } catch (error) {
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }

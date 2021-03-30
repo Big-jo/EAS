@@ -79,6 +79,15 @@ class UserController {
             logger.err(error);
         }
     }
+
+    static async GetContacts(email: string) {
+        try {
+            const contacts = await UserModel.findOne({ email }, { emergencyContacts: 1 }).lean().exec();
+            return  contacts ;
+        } catch (error) {
+            logger.err(error);
+        }
+    }
 }
 
 export default UserController;
