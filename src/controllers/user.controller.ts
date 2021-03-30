@@ -4,6 +4,7 @@
 import jwt from 'jsonwebtoken';
 import UserModel from '../models/user.model';
 import bcrypt from 'bcrypt';
+import logger from '../shared/Logger';
 
 
 class UserController {
@@ -68,7 +69,15 @@ class UserController {
     }
 
     static async UpdateUser(update: [x: string], email: string) {
-        UserModel.findOneAndUpdate({email}, { $set: update}).exec();
+        UserModel.findOneAndUpdate({ email }, { $set: update }).exec();
+    }
+
+    static async addUserContacts(contacts: string[], email: string) {
+        try {
+            UserModel.findOneAndUpdate({ email }, { $push: { emergencyContacts: contacts } }).exec();
+        } catch (error) {
+            logger.err(error);
+        }
     }
 }
 

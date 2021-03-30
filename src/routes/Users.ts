@@ -4,6 +4,7 @@ import userController from '../controllers/user.controller';
 import UserDao from '@daos/User/UserDao.mock';
 import { paramMissingError, IRequest } from '@shared/constants';
 import { STATUS_CODES } from 'node:http';
+import UserController from '../controllers/user.controller';
 
 const router = Router();
 const userDao = new UserDao();
@@ -38,6 +39,15 @@ router.post('/update', async (req, res) => {
         res.json(error);
     }
 });
+
+router.post('/addContacts', async(req, res) => {
+    try {
+        UserController.addUserContacts(req.body.contacts, req.body.email);
+        res.sendStatus(OK)
+    } catch (error) {
+        res.sendStatus(INTERNAL_SERVER_ERROR);
+    }
+})
 
 
 
